@@ -89,6 +89,7 @@ func checkBucketHTTP(s *State, bucket string, resultChan chan<- Result) {
 
 	// don't look at me like that
 perform_request:
+	//fmt.Println(bucket)
 	resp, err := client.Do(req)
 	if err != nil {
 		return
@@ -437,9 +438,12 @@ func main() {
 				for _, sep := range separators {
 					inputChan <- hostStr + sep + word
 					inputChan <- word + sep + hostStr
-					inputChan <- s.DomainName + sep + word
-					inputChan <- word + sep + s.DomainName
-					s.Buckets = s.Buckets + 4
+					if sep != "" {
+						inputChan <- s.DomainName + sep + word
+						inputChan <- word + sep + s.DomainName
+						s.Buckets = s.Buckets + 2
+					}
+					s.Buckets = s.Buckets + 2
 
 					for _, keyword := range stringList {
 						inputChan <- hostStr + sep + word + sep + keyword
@@ -448,21 +452,24 @@ func main() {
 						inputChan <- word + sep + keyword + sep + hostStr
 						inputChan <- keyword + sep + hostStr + sep + word
 						inputChan <- keyword + sep + word + sep + hostStr
-						inputChan <- s.DomainName + sep + word + sep + keyword
-						inputChan <- s.DomainName + sep + keyword + sep + word
-						inputChan <- word + sep + s.DomainName + sep + keyword
-						inputChan <- word + sep + keyword + sep + s.DomainName
-						inputChan <- keyword + sep + s.DomainName + sep + word
-						inputChan <- keyword + sep + word + sep + s.DomainName
 						inputChan <- hostStr + sep + word
 						inputChan <- hostStr + sep + keyword
 						inputChan <- word + sep + hostStr
 						inputChan <- keyword + sep + hostStr
-						inputChan <- s.DomainName + sep + word
-						inputChan <- s.DomainName + sep + keyword
-						inputChan <- word + sep + s.DomainName
-						inputChan <- keyword + sep + s.DomainName
-						s.Buckets = s.Buckets + 20
+						if sep != "" {
+							inputChan <- s.DomainName + sep + word + sep + keyword
+							inputChan <- s.DomainName + sep + keyword + sep + word
+							inputChan <- word + sep + s.DomainName + sep + keyword
+							inputChan <- word + sep + keyword + sep + s.DomainName
+							inputChan <- keyword + sep + s.DomainName + sep + word
+							inputChan <- keyword + sep + word + sep + s.DomainName
+							inputChan <- s.DomainName + sep + word
+							inputChan <- s.DomainName + sep + keyword
+							inputChan <- word + sep + s.DomainName
+							inputChan <- keyword + sep + s.DomainName
+							s.Buckets = s.Buckets + 10
+						}
+						s.Buckets = s.Buckets + 10
 					}
 				}
 			}
