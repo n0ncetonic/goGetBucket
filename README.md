@@ -15,7 +15,7 @@ The following information about every bucket found to exist will be returned:
 # Installation
 
 ```
-go get -u github.com/glen-mac/goGetBucket
+go get -u github.com/eur0pa/goGetBucket
 ```
 
 # Usage
